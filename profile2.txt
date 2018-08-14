@@ -1,4 +1,6 @@
-         1256235 function calls (1229401 primitive calls) in 1.172 seconds
+The tottime column is the most interesting: it gives to total time spent executing the code of a given function ignoring the time spent in executing the sub-functions. The real total time (local code + sub-function calls) is given by the cumtime column. (http://scikit-learn.org/stable/developers/performance.html)
+
+1256235 function calls (1229401 primitive calls) in 1.172 seconds
 
    Ordered by: internal time
 

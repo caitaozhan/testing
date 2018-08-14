@@ -1,0 +1,9 @@
+{
+    "python.linting.pylintArgs" : 
+    [ "--extension-pkg-whitelist=numpy",
+      "--disable=C0103", "--disable=W0703", 
+      "--disable=C0301", "--disable=C0200",
+      "--disable=C0302", "--disable=C0111",
+      "--disable=E1101"
+    ] 
+}
