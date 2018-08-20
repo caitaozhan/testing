@@ -6,7 +6,7 @@ import time
 import numpy as np
 from numba import cuda, jit, float64
 
-TPB = 32 # thread per block
+TPB = 16 # thread per block
 
 def cpu_mat_mul(A, B, C):
     '''matrix mulplication on cpu, O(n^3) implementation
@@ -107,9 +107,9 @@ def host_optimized(A, B, C):
 def main():
     '''main
     '''
-    A = np.full((TPB*400, TPB*600), 0.5, dtype=np.float64)
-    B = np.full((TPB*600, TPB*200), 2, dtype=np.float64)
-    C = np.full((TPB*400, TPB*200), 0, dtype=np.float64)
+    A = np.full((TPB*4, TPB*6), 0.5, dtype=np.float64)
+    B = np.full((TPB*6, TPB*2), 2, dtype=np.float64)
+    C = np.full((TPB*4, TPB*2), 0, dtype=np.float64)
 
     #start = time.time()
     #cpu_mat_mul_jit(A, B, C)
