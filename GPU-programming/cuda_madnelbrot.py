@@ -80,8 +80,17 @@ def python_numba():
     #plt.imshow(gimage)
     #plt.show()
 
-
-mandel_gpu = cuda.jit(mandel)
+@cuda.jit
+def mandel_gpu(x, y, max_iters):
+    '''color function point at (x, y)
+    '''
+    c = complex(x, y)
+    z = 0.0j
+    for i in range(max_iters):
+        z = z*z + c
+        if z.real*z.real + z.imag*z.imag >= 4:
+            return i
+    return max_iters
 
 @cuda.jit
 def create_fractal_kernal(xmin, xmax, ymin, ymax, image, iters):
