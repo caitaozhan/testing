@@ -1,7 +1,7 @@
 import math
-import numpy as np
-from numba import vectorize, cuda, float32, float64
 import time
+import numpy as np
+from numba import vectorize, cuda, float64
 
 
 
@@ -17,7 +17,7 @@ def my_kernal(io_array):
         io_array[pos] *= 2  # do the computation
 
 
-@vectorize([float64(float64,float64)], target='cpu')
+@vectorize([float64(float64, float64)], target='cpu')
 def add_vec_cpu(a, b):
     return a + b
 
@@ -54,7 +54,7 @@ def test1():
     my_kernal[blockspergrid, threadsperblock](data)
     print(data)
 
-    
+
 def test2():
     N = 100000000
     A = np.ones(N, dtype=np.float64)
@@ -64,7 +64,7 @@ def test2():
     C = add_vec_cuda(A, B)
     print(time.time()-start)
 
-    
+
 def test3():
     N = 100000000
     A = np.ones(N, dtype=np.float64)
@@ -86,7 +86,7 @@ def test4():
 
     print("CPU vectorize:", np.allclose(nb_cpu_ans, np_ans))
     print("CPU vectorize:", np.allclose(nb_gpu_ans, np_ans))
-    
+
 
 def test5():
     n = 10000000
@@ -96,7 +96,7 @@ def test5():
     start = time.time()
     z = cpu_sincos(x, y)
     print(time.time()-start)
-    
+
 
 def test6():
     n = 10000000
@@ -106,8 +106,8 @@ def test6():
     start = time.time()
     z = gpu_sincos(x, y)
     print(time.time()-start)
-    
-    
+
+
 def test7():
     n = 10000000
     x = np.arange(n, dtype=np.float64)
@@ -116,7 +116,8 @@ def test7():
     start = time.time()
     np_ans = np.sin(x) * np.cos(y)
     print(time.time()-start)
-    
+
+
 def test8():
     n = 5000000
     p = np.random.random(n).astype(np.float64)
@@ -127,7 +128,7 @@ def test8():
         start = time.time()
         np.sqrt(p**2 + q**3 + r**4 + s**5)
         print(time.time()-start)
-        
+
 def test9():
     n = 5000000
     p = np.random.random(n).astype(np.float64)
@@ -138,7 +139,7 @@ def test9():
         start = time.time()
         cpu_powers(p, q, r, s)
         print(time.time()-start)
-        
+
 def test10():
     n = 5000000
     p = np.random.random(n).astype(np.float64)
@@ -149,8 +150,8 @@ def test10():
         start = time.time()
         gpu_powers(p, q, r, s)
         print(time.time()-start)
-        
-        
+
+
 if __name__ == '__main__':
     #test1()
     #for i in range(50):
