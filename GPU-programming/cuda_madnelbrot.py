@@ -43,8 +43,8 @@ def pure_python():
     start = time.time()
     create_fractal(xmin, xmax, ymin, ymax, gimage, iters)
     print('Mandelbrot created on CPU in:', time.time()-start)
-    #plt.imshow(gimage)
-    #plt.show()
+    plt.imshow(gimage)
+    plt.savefig('mandelbrot.pdf')
 
 
 mandel_numba = jit(mandel)
@@ -77,12 +77,13 @@ def python_numba():
     start = time.time()
     create_fractal_numba(xmin, xmax, ymin, ymax, gimage, iters)
     print('Mandelbrot created on CPU with numba in:', time.time()-start)
-    #plt.imshow(gimage)
-    #plt.show()
+    plt.imshow(gimage)
+    plt.savefig('mandelbrot_numba.pdf')
 
-@cuda.jit
+
+@cuda.jit('float32(float32, float32, float32)', device=True, inline=True)
 def mandel_gpu(x, y, max_iters):
-    '''color function point at (x, y)
+    '''device function, color function point at (x, y)
     '''
     c = complex(x, y)
     z = 0.0j
@@ -103,12 +104,12 @@ def create_fractal_kernal(xmin, xmax, ymin, ymax, image, iters):
     startX, startY = cuda.grid(2)
     gridX = cuda.gridDim.x * cuda.blockDim.x
     gridY = cuda.gridDim.y * cuda.blockDim.y
-    #print('grid', startX, startY)
+    print('grid', startX, startY)
 
     for x in range(startX, width, gridX):
         real = xmin + x*pixel_size_x
         for y in range(startY, height, gridY):
-            #print('x, y = ', x, y)
+            print('x, y = ', x, y)
             imag = ymin + y*pixel_size_y
             color = mandel_gpu(real, imag, iters)
             image[y, x] = color
@@ -127,14 +128,14 @@ def cuda_host():
     gimage = d_image.copy_to_host()
     print('Mandelbrot created on GPU in:', time.time()-start)
     plt.imshow(gimage)
-    plt.savefig('mandelbrot.pdf')
+    plt.savefig('mandelbrot_cuda.pdf')
 
 
 def main():
     '''main function
     '''
-    #pure_python()
-    #python_numba()
+    pure_python()
+    python_numba()
     cuda_host()
 
 
