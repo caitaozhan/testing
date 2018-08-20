@@ -49,8 +49,6 @@ def mat_mul_shared_kernal(A, B, C):
     x, y = cuda.grid(2)
     tx = cuda.threadIdx.x
     ty = cuda.threadIdx.y
-    bx = cuda.blockIdx.x
-    by = cuda.blockIdx.y
     bw = cuda.blockDim.x
     bh = cuda.blockDim.y
     #print((x, y), (tx, ty), (bx, by), (bw, bh))
@@ -85,7 +83,8 @@ def host_naive(A, B, C):
     blockspergrid = (blockspergrid_x, blockspergrid_y)
 
     mat_mul_naive_kernal[blockspergrid, threadsperblock](d_A, d_B, d_C)
-    C = d_C.copy_to_host()
+
+    return d_C.copy_to_host()
 
 
 def host_optimized(A, B, C):
@@ -101,7 +100,8 @@ def host_optimized(A, B, C):
     blockspergrid = (blockspergrid_x, blockspergrid_y)
 
     mat_mul_shared_kernal[blockspergrid, threadsperblock](d_A, d_B, d_C)
-    C = d_C.copy_to_host()
+
+    return d_C.copy_to_host()
 
 
 def main():
@@ -120,22 +120,22 @@ def main():
     #print('cpu mat mul numba.jit:', time.time()-start)
 
     start = time.time()
-    host_naive(A, B, C)
-    print('cpu mat mul cuda.jit:', time.time()-start)
-    print(C)
+    ans = host_naive(A, B, C)
+    print('gpu mat mul global:', time.time()-start)
+    print(ans)
 
     start = time.time()
-    host_naive(A, B, C)
-    print('cpu mat mul cuda.jit:', time.time()-start)
+    ans = host_naive(A, B, C)
+    print('gpu mat mul global:', time.time()-start)
 
     start = time.time()
-    host_optimized(A, B, C)
-    print('cpu mat mul:', time.time()-start)
-    print(C)
+    ans = host_optimized(A, B, C)
+    print('gpu mat mul shared:', time.time()-start)
+    print(ans)
 
     start = time.time()
-    host_optimized(A, B, C)
-    print('cpu mat mul:', time.time()-start)
+    ans = host_optimized(A, B, C)
+    print('gpu mat mul shared:', time.time()-start)
 
 
 if __name__ == '__main__':
