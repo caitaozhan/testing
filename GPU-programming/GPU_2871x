@@ -1,0 +1,5 @@
+Mandelbrot created on CPU in: 13.8241286277771
+Mandelbrot created on CPU with numba in: 0.2768990993499756
+Mandelbrot created on CPU with numba in: 0.1440427303314209
+Mandelbrot created on GPU in: 0.2079143524169922
+Mandelbrot created on GPU in: 0.0045015811920166016
