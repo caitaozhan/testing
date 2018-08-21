@@ -5,6 +5,6 @@
       "--disable=C0301", "--disable=C0200",
       "--disable=C0302", "--disable=C0111",
       "--disable=E1101", "--disable=E1136",
-      "--disable=E1102"
+      "--disable=E1102", "--disable=E1120"
     ] 
 }

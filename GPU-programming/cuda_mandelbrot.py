@@ -5,7 +5,7 @@ https://people.duke.edu/~ccc14/sta-663/CUDAPython.html
 import time
 import matplotlib.pyplot as plt
 import numpy as np
-from numba import jit, cuda, uint32, float32
+from numba import jit, cuda, float32
 
 
 def mandel(x, y, max_iters):
