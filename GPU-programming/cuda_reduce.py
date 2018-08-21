@@ -16,7 +16,7 @@ def prod_reduce(a, b):
 def main():
     '''main
     '''
-    A = np.arange(1, 5, dtype=np.float64)
+    A = np.arange(1, 1000000000, dtype=np.float64)
 
     start = time.time()
     expect = A.sum()
@@ -32,8 +32,10 @@ def main():
     got = sum_reduce(A)
     print('time for cuda reduce:', time.time()-start)
 
-    print('\n#####################\n')
+    print('\nAbove, cuda reduction for summation is slower than numpy summation, because of data transer between host and device?\n#####################\n')
 
+    return 
+    # the following cuda reduction on product does not work. don't know why...
     start = time.time()
     expect = A.prod()
     print('time for numpy:', time.time()-start)
