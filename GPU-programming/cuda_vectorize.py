@@ -124,7 +124,7 @@ def test8():
     q = np.random.random(n).astype(np.float64)
     r = np.random.random(n).astype(np.float64)
     s = np.random.random(n).astype(np.float64)
-    for i in range(10):
+    for _ in range(10):
         start = time.time()
         np.sqrt(p**2 + q**3 + r**4 + s**5)
         print(time.time()-start)
@@ -135,7 +135,7 @@ def test9():
     q = np.random.random(n).astype(np.float64)
     r = np.random.random(n).astype(np.float64)
     s = np.random.random(n).astype(np.float64)
-    for i in range(500):
+    for _ in range(500):
         start = time.time()
         cpu_powers(p, q, r, s)
         print(time.time()-start)
@@ -146,7 +146,7 @@ def test10():
     q = np.random.random(n).astype(np.float64)
     r = np.random.random(n).astype(np.float64)
     s = np.random.random(n).astype(np.float64)
-    for i in range(500):
+    for _ in range(500):
         start = time.time()
         gpu_powers(p, q, r, s)
         print(time.time()-start)

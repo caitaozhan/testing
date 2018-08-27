@@ -34,7 +34,6 @@ def main():
 
     print('\nAbove, cuda reduction for summation is slower than numpy summation, because of data transer between host and device?\n#####################\n')
 
-    return 
     # the following cuda reduction on product does not work. don't know why...
     start = time.time()
     expect = A.prod()
