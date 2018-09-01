@@ -7,7 +7,7 @@ def update_size(size):
     global local_array_size
     local_array_size = size
 
-@cuda.jit('void(float64[:])')
+@cuda.jit('void(float64[:])')  # if not use explicit signature, then the update_size method works.
 def kernal(array):
     x = cuda.grid(1)
     local_array = cuda.local.array(local_array_size, dtype=float64)
