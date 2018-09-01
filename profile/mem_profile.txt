@@ -1,0 +1,28 @@
+Filename: mem_profile.py
+
+Line #    Mem usage    Increment   Line Contents
+================================================
+     4   76.410 MiB   68.777 MiB   @profile
+     5                             def my_func():
+     6   76.410 MiB    7.633 MiB       a = [1] * (10**6)
+     7  229.000 MiB  305.180 MiB       b = [2] * (2*10**7)
+     8   76.410 MiB -305.180 MiB       del b
+     9   76.410 MiB    0.000 MiB       return a
+
+
+Filename: mem_profile.py
+
+Line #    Mem usage    Increment   Line Contents
+================================================
+    11   76.410 MiB   76.410 MiB   @profile
+    12                             def multivariate():
+    13   76.430 MiB    0.020 MiB       mymean = np.random.randn(1000)
+    14   76.430 MiB    0.000 MiB       mycov = np.zeros(1000000).reshape(1000, 1000)
+    15   76.434 MiB    0.000 MiB       for i in range(1000):
+    16   76.434 MiB    0.004 MiB           mycov[i, i] = 1
+    17   76.434 MiB    0.000 MiB       mylist = []
+    18  859.176 MiB    0.000 MiB       for _ in range(100):
+    19  859.176 MiB  782.742 MiB           mylist.append(multivariate_normal(mean=mymean, cov=mycov))
+    20  206.922 MiB -652.254 MiB       del mylist
+
+
