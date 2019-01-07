@@ -20,9 +20,16 @@ def multivariate():
     del mylist
 
 
+@profile
+def numpy_ndarray(sensor, hypothesis, binnum):
+    ndarray = np.random.rand(sensor, hypothesis, binnum)
+    del ndarray
+
+
 if __name__ == '__main__':
-    my_func()
-    my_func()
-    multivariate()
+    #my_func()
+    #my_func()
+    #multivariate()
+    numpy_ndarray(4096, 1000, 1000)
 
 # in command line: python -m memory_profiler mem_profile.py
