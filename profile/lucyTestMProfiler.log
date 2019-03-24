@@ -1,0 +1,24 @@
+Filename: lucyTestMProfiler.py
+
+Line #    Mem usage    Increment   Line Contents
+================================================
+    40  34.8984 MiB  34.8984 MiB   @profile(precision=4,stream=open('lucyTestMProfiler.log', 'w+', encoding='UTF-8'))
+    41                             def testPlus():
+    42  34.8984 MiB   0.0000 MiB       c=0
+    43  34.8984 MiB   0.0000 MiB       for item in range(100000):
+    44  34.8984 MiB   0.0000 MiB           c+=1
+    45  34.9023 MiB   0.0039 MiB       print(c)
+
+
+Filename: lucyTestMProfiler.py
+
+Line #    Mem usage    Increment   Line Contents
+================================================
+    47  34.9258 MiB  34.9258 MiB   @profile(precision=4,stream=open('lucyTestMProfiler.log', 'a', encoding='UTF-8'))  #追加日志
+    48                             def my_func():
+    49  42.5586 MiB   7.6328 MiB       a = [1] * (10**6)   # 10^6 = 1M, 一个float 8B,  估算共8M
+    50 195.1484 MiB 152.5898 MiB       b = [2] * (2*10**7)
+    51  42.5586 MiB -152.5898 MiB       del b
+    52  42.5586 MiB   0.0000 MiB       return a
+
+
