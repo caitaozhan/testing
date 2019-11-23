@@ -1,1 +1,0 @@
-export NUMBA_ENABLE_CUDASIM=1
