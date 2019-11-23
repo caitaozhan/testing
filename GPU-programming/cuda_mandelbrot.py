@@ -98,21 +98,33 @@ def create_fractal_kernal(xmin, xmax, ymin, ymax, image, iters):
     '''create mandelbrot fractal, cuda kernal
     '''
     height, width = image.shape
-    #print(height, width)
     pixel_size_x = (xmax - xmin)/width
     pixel_size_y = (ymax - ymin)/height
     startX, startY = cuda.grid(2)
     gridX = cuda.gridDim.x * cuda.blockDim.x
     gridY = cuda.gridDim.y * cuda.blockDim.y
-    #print('grid', startX, startY)
 
     for x in range(startX, width, gridX):
         real = xmin + x*pixel_size_x
         for y in range(startY, height, gridY):
-            #print('x, y = ', x, y)
             imag = ymin + y*pixel_size_y
             color = mandel_gpu(real, imag, iters)
             image[y, x] = color
+
+
+@cuda.jit
+def create_fractal_kernal2(xmin, xmax, ymin, ymax, image, iters):
+    '''create mandelbrot fractal, cuda kernal
+    '''
+    height, width = image.shape
+    pixel_size_x = (xmax - xmin)/width
+    pixel_size_y = (ymax - ymin)/height
+    y, x = cuda.grid(2)
+    if x < width and y < height:
+        real = xmin + x*pixel_size_x
+        imag = ymin + y*pixel_size_y
+        color = mandel_gpu(real, imag, iters)
+        image[y, x] = color
 
 
 def cuda_host():
@@ -133,16 +145,39 @@ def cuda_host():
     create_fractal_kernal[griddim, blockdim](xmin, xmax, ymin, ymax, d_image, iters)
     gimage = d_image.copy_to_host()
     print('Mandelbrot created on GPU in:', time.time()-start)
-    #plt.imshow(gimage)
-    #plt.savefig('mandelbrot_cuda.pdf')
+    plt.imshow(gimage)
+    plt.savefig('mandelbrot_cuda.png')
+
+
+def cuda_host2():
+    gimage = np.zeros((1024, 1536), dtype=np.uint8)
+    blockdim = (32, 32)
+    griddim = (32, 48)
+    xmin, xmax, ymin, ymax = np.array([-2.0, 1.0, -1.0, 1.0]).astype('float32')
+    iters = 100
+
+    start = time.time()
+    d_image = cuda.to_device(gimage)
+    create_fractal_kernal2[griddim, blockdim](xmin, xmax, ymin, ymax, d_image, iters)
+    gimage = d_image.copy_to_host()
+    print('Mandelbrot created on GPU in:', time.time()-start)
+
+    start = time.time()
+    d_image = cuda.to_device(gimage)
+    create_fractal_kernal2[griddim, blockdim](xmin, xmax, ymin, ymax, d_image, iters)
+    gimage = d_image.copy_to_host()
+    print('Mandelbrot created on GPU in:', time.time()-start)
+    plt.imshow(gimage)
+    plt.savefig('mandelbrot_cuda2.png')
 
 
 def main():
     '''main function
     '''
-    pure_python()
-    python_numba()
+    # pure_python()
+    # python_numba()
     cuda_host()
+    cuda_host2()
 
 
 if __name__ == '__main__':
