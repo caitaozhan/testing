@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 ##################################################
 # GNU Radio Python Flow Graph
-# Title: Fm Radio
-# Generated: Sat Feb 22 15:26:18 2020
+# Title: Fm Radio Rtl
+# Generated: Sat Feb 22 16:12:49 2020
 ##################################################
 
 
@@ -35,17 +35,17 @@ import time
 import wx
 
 
-class fm_radio(grc_wxgui.top_block_gui):
+class fm_radio_rtl(grc_wxgui.top_block_gui):
 
     def __init__(self):
-        grc_wxgui.top_block_gui.__init__(self, title="Fm Radio")
+        grc_wxgui.top_block_gui.__init__(self, title="Fm Radio Rtl")
         _icon_path = "/usr/share/icons/hicolor/32x32/apps/gnuradio-grc.png"
         self.SetIcon(wx.Icon(_icon_path, wx.BITMAP_TYPE_ANY))
 
         ##################################################
         # Variables
         ##################################################
-        self.samp_rate = samp_rate = 5e6
+        self.samp_rate = samp_rate = 2e6
         self.freq = freq = 105.7e6
 
         ##################################################
@@ -95,28 +95,28 @@ class fm_radio(grc_wxgui.top_block_gui):
         	peak_hold=False,
         )
         self.notebook_0.GetPage(0).Add(self.wxgui_fftsink2_0.win)
+        self.rtlsdr_source_0 = osmosdr.source( args="numchan=" + str(1) + " " + 'rtl=0' )
+        self.rtlsdr_source_0.set_sample_rate(samp_rate)
+        self.rtlsdr_source_0.set_center_freq(freq, 0)
+        self.rtlsdr_source_0.set_freq_corr(0, 0)
+        self.rtlsdr_source_0.set_dc_offset_mode(2, 0)
+        self.rtlsdr_source_0.set_iq_balance_mode(2, 0)
+        self.rtlsdr_source_0.set_gain_mode(True, 0)
+        self.rtlsdr_source_0.set_gain(10, 0)
+        self.rtlsdr_source_0.set_if_gain(20, 0)
+        self.rtlsdr_source_0.set_bb_gain(20, 0)
+        self.rtlsdr_source_0.set_antenna('', 0)
+        self.rtlsdr_source_0.set_bandwidth(0, 0)
+
         self.rational_resampler_xxx_0 = filter.rational_resampler_fff(
-                interpolation=48,
+                interpolation=24,
                 decimation=250,
                 taps=None,
                 fractional_bw=None,
         )
-        self.osmosdr_source_0 = osmosdr.source( args="numchan=" + str(1) + " " + 'uhd,nchan=1' )
-        self.osmosdr_source_0.set_sample_rate(samp_rate)
-        self.osmosdr_source_0.set_center_freq(105.7e6, 0)
-        self.osmosdr_source_0.set_freq_corr(0, 0)
-        self.osmosdr_source_0.set_dc_offset_mode(2, 0)
-        self.osmosdr_source_0.set_iq_balance_mode(2, 0)
-        self.osmosdr_source_0.set_gain_mode(False, 0)
-        self.osmosdr_source_0.set_gain(10, 0)
-        self.osmosdr_source_0.set_if_gain(20, 0)
-        self.osmosdr_source_0.set_bb_gain(20, 0)
-        self.osmosdr_source_0.set_antenna('RX2', 0)
-        self.osmosdr_source_0.set_bandwidth(20e6, 0)
-
-        self.low_pass_filter_0 = filter.fir_filter_ccf(20, firdes.low_pass(
-        	1, samp_rate, 100e3, 10e3, firdes.WIN_HAMMING, 6.76))
-        self.audio_sink_0 = audio.sink(48000, '', True)
+        self.low_pass_filter_0 = filter.fir_filter_ccf(8, firdes.low_pass(
+        	2, samp_rate, 100e3, 10e3, firdes.WIN_KAISER, 6.76))
+        self.audio_sink_0 = audio.sink(24000, '', True)
         self.analog_wfm_rcv_0 = analog.wfm_rcv(
         	quad_rate=250e3,
         	audio_decimation=1,
@@ -128,9 +128,9 @@ class fm_radio(grc_wxgui.top_block_gui):
         self.connect((self.analog_wfm_rcv_0, 0), (self.rational_resampler_xxx_0, 0))
         self.connect((self.analog_wfm_rcv_0, 0), (self.wxgui_fftsink2_1, 0))
         self.connect((self.low_pass_filter_0, 0), (self.analog_wfm_rcv_0, 0))
-        self.connect((self.osmosdr_source_0, 0), (self.low_pass_filter_0, 0))
-        self.connect((self.osmosdr_source_0, 0), (self.wxgui_fftsink2_0, 0))
         self.connect((self.rational_resampler_xxx_0, 0), (self.audio_sink_0, 0))
+        self.connect((self.rtlsdr_source_0, 0), (self.low_pass_filter_0, 0))
+        self.connect((self.rtlsdr_source_0, 0), (self.wxgui_fftsink2_0, 0))
 
     def get_samp_rate(self):
         return self.samp_rate
@@ -138,8 +138,8 @@ class fm_radio(grc_wxgui.top_block_gui):
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
         self.wxgui_fftsink2_0.set_sample_rate(self.samp_rate)
-        self.osmosdr_source_0.set_sample_rate(self.samp_rate)
-        self.low_pass_filter_0.set_taps(firdes.low_pass(1, self.samp_rate, 100e3, 10e3, firdes.WIN_HAMMING, 6.76))
+        self.rtlsdr_source_0.set_sample_rate(self.samp_rate)
+        self.low_pass_filter_0.set_taps(firdes.low_pass(2, self.samp_rate, 100e3, 10e3, firdes.WIN_KAISER, 6.76))
 
     def get_freq(self):
         return self.freq
@@ -148,9 +148,10 @@ class fm_radio(grc_wxgui.top_block_gui):
         self.freq = freq
         self._freq_text_box.set_value(self.freq)
         self.wxgui_fftsink2_0.set_baseband_freq(self.freq)
+        self.rtlsdr_source_0.set_center_freq(self.freq, 0)
 
 
-def main(top_block_cls=fm_radio, options=None):
+def main(top_block_cls=fm_radio_rtl, options=None):
 
     tb = top_block_cls()
     tb.Start(True)

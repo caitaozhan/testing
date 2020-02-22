@@ -46,7 +46,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>fm_radio</value>
+      <value>fm_radio_rtl</value>
     </param>
     <param>
       <key>max_nouts</key>
@@ -152,7 +152,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>5e6</value>
+      <value>2e6</value>
     </param>
   </block>
   <block>
@@ -246,7 +246,7 @@
     </param>
     <param>
       <key>samp_rate</key>
-      <value>48000</value>
+      <value>24000</value>
     </param>
   </block>
   <block>
@@ -273,7 +273,7 @@
     </param>
     <param>
       <key>decim</key>
-      <value>20</value>
+      <value>8</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -293,7 +293,7 @@
     </param>
     <param>
       <key>gain</key>
-      <value>1</value>
+      <value>2</value>
     </param>
     <param>
       <key>id</key>
@@ -321,7 +321,7 @@
     </param>
     <param>
       <key>win</key>
-      <value>firdes.WIN_HAMMING</value>
+      <value>firdes.WIN_KAISER</value>
     </param>
   </block>
   <block>
@@ -368,14 +368,73 @@
     </param>
   </block>
   <block>
-    <key>osmosdr_source</key>
+    <key>rational_resampler_xxx</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>decim</key>
+      <value>250</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>fbw</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(872, 244)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>rational_resampler_xxx_0</value>
+    </param>
+    <param>
+      <key>interp</key>
+      <value>24</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>taps</key>
+      <value></value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>fff</value>
+    </param>
+  </block>
+  <block>
+    <key>rtlsdr_source</key>
     <param>
       <key>alias</key>
       <value></value>
     </param>
     <param>
       <key>ant0</key>
-      <value>RX2</value>
+      <value></value>
     </param>
     <param>
       <key>bb_gain0</key>
@@ -383,7 +442,7 @@
     </param>
     <param>
       <key>bw0</key>
-      <value>20e6</value>
+      <value>0</value>
     </param>
     <param>
       <key>dc_offset_mode0</key>
@@ -395,11 +454,11 @@
     </param>
     <param>
       <key>freq0</key>
-      <value>105.7e6</value>
+      <value>freq</value>
     </param>
     <param>
       <key>gain_mode0</key>
-      <value>False</value>
+      <value>True</value>
     </param>
     <param>
       <key>if_gain0</key>
@@ -1663,7 +1722,7 @@
     </param>
     <param>
       <key>args</key>
-      <value>uhd,nchan=1</value>
+      <value>rtl=0</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -1671,7 +1730,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(56, 180)</value>
+      <value>(104, 204)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1679,7 +1738,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>osmosdr_source_0</value>
+      <value>rtlsdr_source_0</value>
     </param>
     <param>
       <key>maxoutbuf</key>
@@ -1772,65 +1831,6 @@
     <param>
       <key>sync</key>
       <value></value>
-    </param>
-  </block>
-  <block>
-    <key>rational_resampler_xxx</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>decim</key>
-      <value>250</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>fbw</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(872, 244)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>rational_resampler_xxx_0</value>
-    </param>
-    <param>
-      <key>interp</key>
-      <value>48</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>taps</key>
-      <value></value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>fff</value>
     </param>
   </block>
   <block>
@@ -2058,20 +2058,20 @@
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>osmosdr_source_0</source_block_id>
+    <source_block_id>rational_resampler_xxx_0</source_block_id>
+    <sink_block_id>audio_sink_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>rtlsdr_source_0</source_block_id>
     <sink_block_id>low_pass_filter_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>osmosdr_source_0</source_block_id>
+    <source_block_id>rtlsdr_source_0</source_block_id>
     <sink_block_id>wxgui_fftsink2_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>rational_resampler_xxx_0</source_block_id>
-    <sink_block_id>audio_sink_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
