@@ -2,10 +2,8 @@
 # -*- coding: utf-8 -*-
 ##################################################
 # GNU Radio Python Flow Graph
-# Title: UHD WBFM Receive
-# Author: Example
-# Description: WBFM Receive
-# Generated: Sun Feb 23 22:39:34 2020
+# Title: UHD TX DPSK
+# Generated: Tue Feb 25 17:18:12 2020
 ##################################################
 
 from distutils.version import StrictVersion
@@ -22,11 +20,9 @@ if __name__ == '__main__':
 
 from PyQt5 import Qt
 from PyQt5 import Qt, QtCore
-from gnuradio import analog
-from gnuradio import audio
 from gnuradio import blocks
+from gnuradio import digital
 from gnuradio import eng_notation
-from gnuradio import filter
 from gnuradio import gr
 from gnuradio import qtgui
 from gnuradio import uhd
@@ -34,18 +30,19 @@ from gnuradio.eng_option import eng_option
 from gnuradio.filter import firdes
 from gnuradio.qtgui import Range, RangeWidget
 from optparse import OptionParser
+import numpy
 import sip
 import sys
 import time
 from gnuradio import qtgui
 
 
-class uhd_wbfm_receive(gr.top_block, Qt.QWidget):
+class uhd_tx_dpsk(gr.top_block, Qt.QWidget):
 
-    def __init__(self, address='serial=307B618', audio_output='', freq=105.7e6, gain=0, samp_rate=2e6):
-        gr.top_block.__init__(self, "UHD WBFM Receive")
+    def __init__(self, address='serial=307B618', freq=915e6, gain=0, samp_rate=2e6):
+        gr.top_block.__init__(self, "UHD TX DPSK")
         Qt.QWidget.__init__(self)
-        self.setWindowTitle("UHD WBFM Receive")
+        self.setWindowTitle("UHD TX DPSK")
         qtgui.util.check_set_qss()
         try:
             self.setWindowIcon(Qt.QIcon.fromTheme('gnuradio-grc'))
@@ -63,7 +60,7 @@ class uhd_wbfm_receive(gr.top_block, Qt.QWidget):
         self.top_grid_layout = Qt.QGridLayout()
         self.top_layout.addLayout(self.top_grid_layout)
 
-        self.settings = Qt.QSettings("GNU Radio", "uhd_wbfm_receive")
+        self.settings = Qt.QSettings("GNU Radio", "uhd_tx_dpsk")
 
         if StrictVersion(Qt.qVersion()) < StrictVersion("5.0.0"):
             self.restoreGeometry(self.settings.value("geometry").toByteArray())
@@ -74,7 +71,6 @@ class uhd_wbfm_receive(gr.top_block, Qt.QWidget):
         # Parameters
         ##################################################
         self.address = address
-        self.audio_output = audio_output
         self.freq = freq
         self.gain = gain
         self.samp_rate = samp_rate
@@ -82,63 +78,46 @@ class uhd_wbfm_receive(gr.top_block, Qt.QWidget):
         ##################################################
         # Variables
         ##################################################
-        self.volume = volume = 1
-        self.tun_gain = tun_gain = 10
-        self.tun_freq = tun_freq = freq/1e6
-        self.fine = fine = 0
-        self.channel_width = channel_width = 200e3
-        self.audio_decim = audio_decim = 10
+        self.tun_gain = tun_gain = 50
+        self.tun_freq = tun_freq = 915.8e6
+        self.samps_per_sym = samps_per_sym = 4
+        self.ampl = ampl = 0.1
 
         ##################################################
         # Blocks
         ##################################################
-        self._volume_range = Range(0, 10, 0.1, 1, 200)
-        self._volume_win = RangeWidget(self._volume_range, self.set_volume, 'Volume', "counter_slider", float)
-        self.top_grid_layout.addWidget(self._volume_win, 1, 0, 1, 4)
-        [self.top_grid_layout.setRowStretch(r,1) for r in range(1,2)]
-        [self.top_grid_layout.setColumnStretch(c,1) for c in range(0,4)]
-        self._tun_gain_range = Range(0, 20, 1, 10, 200)
-        self._tun_gain_win = RangeWidget(self._tun_gain_range, self.set_tun_gain, 'UHD Gain', "counter_slider", float)
+        self._tun_gain_range = Range(40, 80, 1, 50, 200)
+        self._tun_gain_win = RangeWidget(self._tun_gain_range, self.set_tun_gain, 'UHD Tx Gain', "counter_slider", float)
         self.top_layout.addWidget(self._tun_gain_win)
-        self._tun_freq_range = Range(87.9, 108.1, 1, freq/1e6, 200)
-        self._tun_freq_win = RangeWidget(self._tun_freq_range, self.set_tun_freq, 'UHD Freq (MHz)', "counter_slider", float)
-        self.top_grid_layout.addWidget(self._tun_freq_win, 0, 0, 1, 2)
-        [self.top_grid_layout.setRowStretch(r,1) for r in range(0,1)]
-        [self.top_grid_layout.setColumnStretch(c,1) for c in range(0,2)]
-        self._fine_range = Range(-.1, .1, .01, 0, 200)
-        self._fine_win = RangeWidget(self._fine_range, self.set_fine, 'Fine Freq (MHz)', "counter_slider", float)
-        self.top_grid_layout.addWidget(self._fine_win, 0, 2, 1, 2)
-        [self.top_grid_layout.setRowStretch(r,1) for r in range(0,1)]
-        [self.top_grid_layout.setColumnStretch(c,1) for c in range(2,4)]
-        self.uhd_usrp_source_0 = uhd.usrp_source(
-        	",".join((address, "")),
+        self._tun_freq_range = Range(914.8e6, 916.8e6, 1, 915.8e6, 200)
+        self._tun_freq_win = RangeWidget(self._tun_freq_range, self.set_tun_freq, 'UHD Freq (Hz)', "counter_slider", float)
+        self.top_layout.addWidget(self._tun_freq_win)
+        self._ampl_range = Range(0, 1, 0.01, 0.1, 200)
+        self._ampl_win = RangeWidget(self._ampl_range, self.set_ampl, 'Amplitude', "counter_slider", float)
+        self.top_layout.addWidget(self._ampl_win)
+        self.uhd_usrp_sink_0 = uhd.usrp_sink(
+        	",".join(('', "")),
         	uhd.stream_args(
         		cpu_format="fc32",
         		channels=range(1),
         	),
         )
-        self.uhd_usrp_source_0.set_samp_rate(samp_rate)
-        self.uhd_usrp_source_0.set_center_freq((tun_freq+fine)*1e6, 0)
-        self.uhd_usrp_source_0.set_gain(tun_gain, 0)
-        self.rational_resampler_xxx_0 = filter.rational_resampler_ccc(
-                interpolation=12,
-                decimation=5,
-                taps=None,
-                fractional_bw=None,
-        )
+        self.uhd_usrp_sink_0.set_samp_rate(samp_rate)
+        self.uhd_usrp_sink_0.set_center_freq(tun_freq, 0)
+        self.uhd_usrp_sink_0.set_gain(tun_gain, 0)
         self.qtgui_freq_sink_x_0 = qtgui.freq_sink_c(
-        	512, #size
+        	1024, #size
         	firdes.WIN_BLACKMAN_hARRIS, #wintype
-        	(tun_freq+fine)*1e6, #fc
+        	tun_freq, #fc
         	samp_rate, #bw
-        	'', #name
+        	'Transmit Spectrum', #name
         	1 #number of inputs
         )
         self.qtgui_freq_sink_x_0.set_update_time(0.10)
         self.qtgui_freq_sink_x_0.set_y_axis(-140, 10)
         self.qtgui_freq_sink_x_0.set_y_label('Relative Gain', 'dB')
         self.qtgui_freq_sink_x_0.set_trigger_mode(qtgui.TRIG_MODE_FREE, 0.0, 0, "")
-        self.qtgui_freq_sink_x_0.enable_autoscale(False)
+        self.qtgui_freq_sink_x_0.enable_autoscale(True)
         self.qtgui_freq_sink_x_0.enable_grid(False)
         self.qtgui_freq_sink_x_0.set_fft_average(1.0)
         self.qtgui_freq_sink_x_0.enable_axis_labels(True)
@@ -168,30 +147,27 @@ class uhd_wbfm_receive(gr.top_block, Qt.QWidget):
             self.qtgui_freq_sink_x_0.set_line_alpha(i, alphas[i])
 
         self._qtgui_freq_sink_x_0_win = sip.wrapinstance(self.qtgui_freq_sink_x_0.pyqwidget(), Qt.QWidget)
-        self.top_grid_layout.addWidget(self._qtgui_freq_sink_x_0_win, 2, 0, 2, 4)
-        [self.top_grid_layout.setRowStretch(r,1) for r in range(2,4)]
-        [self.top_grid_layout.setColumnStretch(c,1) for c in range(0,4)]
-        self.low_pass_filter_0 = filter.fir_filter_ccf(int(samp_rate/channel_width), firdes.low_pass(
-        	1, samp_rate, 115e3, 30e3, firdes.WIN_HANN, 6.76))
-        self.blocks_multiply_const_vxx = blocks.multiply_const_vff((volume, ))
-        self.audio_sink = audio.sink(48000, audio_output, True)
-        self.analog_wfm_rcv = analog.wfm_rcv(
-        	quad_rate=480e3,
-        	audio_decimation=audio_decim,
-        )
+        self.top_layout.addWidget(self._qtgui_freq_sink_x_0_win)
+        self.digital_dxpsk_mod_0 = digital.dqpsk_mod(
+        	samples_per_symbol=samps_per_sym,
+        	excess_bw=0.35,
+        	mod_code="gray",
+        	verbose=False,
+        	log=False)
+
+        self.blocks_multiply_const_vxx_0 = blocks.multiply_const_vcc((ampl, ))
+        self.analog_random_source_x_0 = blocks.vector_source_b(map(int, numpy.random.randint(0, 2**8, 1000)), True)
 
         ##################################################
         # Connections
         ##################################################
-        self.connect((self.analog_wfm_rcv, 0), (self.blocks_multiply_const_vxx, 0))
-        self.connect((self.blocks_multiply_const_vxx, 0), (self.audio_sink, 0))
-        self.connect((self.low_pass_filter_0, 0), (self.qtgui_freq_sink_x_0, 0))
-        self.connect((self.low_pass_filter_0, 0), (self.rational_resampler_xxx_0, 0))
-        self.connect((self.rational_resampler_xxx_0, 0), (self.analog_wfm_rcv, 0))
-        self.connect((self.uhd_usrp_source_0, 0), (self.low_pass_filter_0, 0))
+        self.connect((self.analog_random_source_x_0, 0), (self.digital_dxpsk_mod_0, 0))
+        self.connect((self.blocks_multiply_const_vxx_0, 0), (self.qtgui_freq_sink_x_0, 0))
+        self.connect((self.blocks_multiply_const_vxx_0, 0), (self.uhd_usrp_sink_0, 0))
+        self.connect((self.digital_dxpsk_mod_0, 0), (self.blocks_multiply_const_vxx_0, 0))
 
     def closeEvent(self, event):
-        self.settings = Qt.QSettings("GNU Radio", "uhd_wbfm_receive")
+        self.settings = Qt.QSettings("GNU Radio", "uhd_tx_dpsk")
         self.settings.setValue("geometry", self.saveGeometry())
         event.accept()
 
@@ -201,18 +177,11 @@ class uhd_wbfm_receive(gr.top_block, Qt.QWidget):
     def set_address(self, address):
         self.address = address
 
-    def get_audio_output(self):
-        return self.audio_output
-
-    def set_audio_output(self, audio_output):
-        self.audio_output = audio_output
-
     def get_freq(self):
         return self.freq
 
     def set_freq(self, freq):
         self.freq = freq
-        self.set_tun_freq(self.freq/1e6)
 
     def get_gain(self):
         return self.gain
@@ -225,23 +194,15 @@ class uhd_wbfm_receive(gr.top_block, Qt.QWidget):
 
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
-        self.uhd_usrp_source_0.set_samp_rate(self.samp_rate)
-        self.qtgui_freq_sink_x_0.set_frequency_range((self.tun_freq+self.fine)*1e6, self.samp_rate)
-        self.low_pass_filter_0.set_taps(firdes.low_pass(1, self.samp_rate, 115e3, 30e3, firdes.WIN_HANN, 6.76))
-
-    def get_volume(self):
-        return self.volume
-
-    def set_volume(self, volume):
-        self.volume = volume
-        self.blocks_multiply_const_vxx.set_k((self.volume, ))
+        self.uhd_usrp_sink_0.set_samp_rate(self.samp_rate)
+        self.qtgui_freq_sink_x_0.set_frequency_range(self.tun_freq, self.samp_rate)
 
     def get_tun_gain(self):
         return self.tun_gain
 
     def set_tun_gain(self, tun_gain):
         self.tun_gain = tun_gain
-        self.uhd_usrp_source_0.set_gain(self.tun_gain, 0)
+        self.uhd_usrp_sink_0.set_gain(self.tun_gain, 0)
 
 
     def get_tun_freq(self):
@@ -249,41 +210,30 @@ class uhd_wbfm_receive(gr.top_block, Qt.QWidget):
 
     def set_tun_freq(self, tun_freq):
         self.tun_freq = tun_freq
-        self.uhd_usrp_source_0.set_center_freq((self.tun_freq+self.fine)*1e6, 0)
-        self.qtgui_freq_sink_x_0.set_frequency_range((self.tun_freq+self.fine)*1e6, self.samp_rate)
+        self.uhd_usrp_sink_0.set_center_freq(self.tun_freq, 0)
+        self.qtgui_freq_sink_x_0.set_frequency_range(self.tun_freq, self.samp_rate)
 
-    def get_fine(self):
-        return self.fine
+    def get_samps_per_sym(self):
+        return self.samps_per_sym
 
-    def set_fine(self, fine):
-        self.fine = fine
-        self.uhd_usrp_source_0.set_center_freq((self.tun_freq+self.fine)*1e6, 0)
-        self.qtgui_freq_sink_x_0.set_frequency_range((self.tun_freq+self.fine)*1e6, self.samp_rate)
+    def set_samps_per_sym(self, samps_per_sym):
+        self.samps_per_sym = samps_per_sym
 
-    def get_channel_width(self):
-        return self.channel_width
+    def get_ampl(self):
+        return self.ampl
 
-    def set_channel_width(self, channel_width):
-        self.channel_width = channel_width
-
-    def get_audio_decim(self):
-        return self.audio_decim
-
-    def set_audio_decim(self, audio_decim):
-        self.audio_decim = audio_decim
+    def set_ampl(self, ampl):
+        self.ampl = ampl
+        self.blocks_multiply_const_vxx_0.set_k((self.ampl, ))
 
 
 def argument_parser():
-    description = 'WBFM Receive'
-    parser = OptionParser(usage="%prog: [options]", option_class=eng_option, description=description)
+    parser = OptionParser(usage="%prog: [options]", option_class=eng_option)
     parser.add_option(
         "-a", "--address", dest="address", type="string", default='serial=307B618',
         help="Set serial [default=%default]")
     parser.add_option(
-        "-O", "--audio-output", dest="audio_output", type="string", default='',
-        help="Set Audio Output Device [default=%default]")
-    parser.add_option(
-        "-f", "--freq", dest="freq", type="eng_float", default=eng_notation.num_to_str(105.7e6),
+        "-f", "--freq", dest="freq", type="eng_float", default=eng_notation.num_to_str(915e6),
         help="Set Default Frequency [default=%default]")
     parser.add_option(
         "-g", "--gain", dest="gain", type="eng_float", default=eng_notation.num_to_str(0),
@@ -294,7 +244,7 @@ def argument_parser():
     return parser
 
 
-def main(top_block_cls=uhd_wbfm_receive, options=None):
+def main(top_block_cls=uhd_tx_dpsk, options=None):
     if options is None:
         options, _ = argument_parser().parse_args()
 
@@ -303,7 +253,7 @@ def main(top_block_cls=uhd_wbfm_receive, options=None):
         Qt.QApplication.setGraphicsSystem(style)
     qapp = Qt.QApplication(sys.argv)
 
-    tb = top_block_cls(address=options.address, audio_output=options.audio_output, freq=options.freq, gain=options.gain, samp_rate=options.samp_rate)
+    tb = top_block_cls(address=options.address, freq=options.freq, gain=options.gain, samp_rate=options.samp_rate)
     tb.start()
     tb.show()
 
