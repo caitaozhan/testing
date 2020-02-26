@@ -46,7 +46,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>fm_radio</value>
+      <value>fm_radio_usrp</value>
     </param>
     <param>
       <key>max_nouts</key>

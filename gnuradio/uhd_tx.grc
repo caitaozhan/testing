@@ -101,45 +101,22 @@
     </param>
     <param>
       <key>id</key>
-      <value>freqency</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>915.8e6</value>
-    </param>
-  </block>
-  <block>
-    <key>variable</key>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(552, 12)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
       <value>frequency</value>
     </param>
     <param>
       <key>value</key>
-      <value>915.8e6</value>
+      <value>107.3e6</value>
     </param>
   </block>
   <block>
-    <key>variable</key>
+    <key>variable_qtgui_range</key>
     <param>
       <key>comment</key>
       <value></value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>50</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -147,7 +124,11 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(440, 12)</value>
+      <value>(456, 12)</value>
+    </param>
+    <param>
+      <key>gui_hint</key>
+      <value></value>
     </param>
     <param>
       <key>_rotation</key>
@@ -158,8 +139,36 @@
       <value>gain</value>
     </param>
     <param>
-      <key>value</key>
-      <value>50</value>
+      <key>label</key>
+      <value></value>
+    </param>
+    <param>
+      <key>min_len</key>
+      <value>200</value>
+    </param>
+    <param>
+      <key>orient</key>
+      <value>Qt.Horizontal</value>
+    </param>
+    <param>
+      <key>start</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>step</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>stop</key>
+      <value>100</value>
+    </param>
+    <param>
+      <key>rangeType</key>
+      <value>float</value>
+    </param>
+    <param>
+      <key>widget</key>
+      <value>counter_slider</value>
     </param>
   </block>
   <block>
@@ -268,7 +277,7 @@
     </param>
     <param>
       <key>center_freq0</key>
-      <value>freqency</value>
+      <value>frequency</value>
     </param>
     <param>
       <key>norm_gain0</key>

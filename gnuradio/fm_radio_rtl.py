@@ -3,7 +3,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: Fm Radio Rtl
-# Generated: Sun Feb 23 21:29:52 2020
+# Generated: Tue Feb 25 21:43:37 2020
 ##################################################
 
 
@@ -46,7 +46,7 @@ class fm_radio_rtl(grc_wxgui.top_block_gui):
         # Variables
         ##################################################
         self.samp_rate = samp_rate = 2e6
-        self.freq = freq = 105.7e6
+        self.freq = freq = 107.3e6
 
         ##################################################
         # Blocks

@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 ##################################################
 # GNU Radio Python Flow Graph
-# Title: Fm Radio
-# Generated: Sun Feb 23 21:30:49 2020
+# Title: Fm Radio Usrp
+# Generated: Tue Feb 25 21:25:59 2020
 ##################################################
 
 
@@ -35,10 +35,10 @@ import time
 import wx
 
 
-class fm_radio(grc_wxgui.top_block_gui):
+class fm_radio_usrp(grc_wxgui.top_block_gui):
 
     def __init__(self):
-        grc_wxgui.top_block_gui.__init__(self, title="Fm Radio")
+        grc_wxgui.top_block_gui.__init__(self, title="Fm Radio Usrp")
         _icon_path = "/usr/share/icons/hicolor/32x32/apps/gnuradio-grc.png"
         self.SetIcon(wx.Icon(_icon_path, wx.BITMAP_TYPE_ANY))
 
@@ -150,7 +150,7 @@ class fm_radio(grc_wxgui.top_block_gui):
         self.wxgui_fftsink2_0.set_baseband_freq(self.freq)
 
 
-def main(top_block_cls=fm_radio, options=None):
+def main(top_block_cls=fm_radio_usrp, options=None):
 
     tb = top_block_cls()
     tb.Start(True)

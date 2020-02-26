@@ -3,7 +3,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: Uhd Tx
-# Generated: Tue Feb 25 17:17:01 2020
+# Generated: Tue Feb 25 21:07:19 2020
 ##################################################
 
 from distutils.version import StrictVersion
@@ -25,6 +25,7 @@ from gnuradio import gr
 from gnuradio import uhd
 from gnuradio.eng_option import eng_option
 from gnuradio.filter import firdes
+from gnuradio.qtgui import Range, RangeWidget
 from optparse import OptionParser
 import sys
 import time
@@ -66,12 +67,14 @@ class uhd_tx(gr.top_block, Qt.QWidget):
         ##################################################
         self.samp_rate = samp_rate = 64000
         self.gain = gain = 50
-        self.frequency = frequency = 915.8e6
-        self.freqency = freqency = 915.8e6
+        self.frequency = frequency = 107.3e6
 
         ##################################################
         # Blocks
         ##################################################
+        self._gain_range = Range(0, 100, 1, 50, 200)
+        self._gain_win = RangeWidget(self._gain_range, self.set_gain, "gain", "counter_slider", float)
+        self.top_layout.addWidget(self._gain_win)
         self.uhd_usrp_sink_0 = uhd.usrp_sink(
         	",".join(("", "")),
         	uhd.stream_args(
@@ -80,7 +83,7 @@ class uhd_tx(gr.top_block, Qt.QWidget):
         	),
         )
         self.uhd_usrp_sink_0.set_samp_rate(samp_rate)
-        self.uhd_usrp_sink_0.set_center_freq(freqency, 0)
+        self.uhd_usrp_sink_0.set_center_freq(frequency, 0)
         self.uhd_usrp_sink_0.set_gain(gain, 0)
         self.analog_sig_source_x_0 = analog.sig_source_c(samp_rate, analog.GR_COS_WAVE, 1000, 1, 0)
 
@@ -115,13 +118,7 @@ class uhd_tx(gr.top_block, Qt.QWidget):
 
     def set_frequency(self, frequency):
         self.frequency = frequency
-
-    def get_freqency(self):
-        return self.freqency
-
-    def set_freqency(self, freqency):
-        self.freqency = freqency
-        self.uhd_usrp_sink_0.set_center_freq(self.freqency, 0)
+        self.uhd_usrp_sink_0.set_center_freq(self.frequency, 0)
 
 
 def main(top_block_cls=uhd_tx, options=None):
