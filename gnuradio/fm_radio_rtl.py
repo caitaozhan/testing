@@ -3,7 +3,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: Fm Radio Rtl
-# Generated: Tue Feb 25 21:43:37 2020
+# Generated: Thu Feb 27 21:52:24 2020
 ##################################################
 
 
@@ -95,7 +95,7 @@ class fm_radio_rtl(grc_wxgui.top_block_gui):
         	peak_hold=False,
         )
         self.notebook_0.GetPage(0).Add(self.wxgui_fftsink2_0.win)
-        self.rtlsdr_source_0 = osmosdr.source( args="numchan=" + str(1) + " " + 'rtl=0' )
+        self.rtlsdr_source_0 = osmosdr.source( args="numchan=" + str(1) + " " + '' )
         self.rtlsdr_source_0.set_sample_rate(samp_rate)
         self.rtlsdr_source_0.set_center_freq(freq, 0)
         self.rtlsdr_source_0.set_freq_corr(0, 0)

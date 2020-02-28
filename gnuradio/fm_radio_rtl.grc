@@ -1722,7 +1722,7 @@
     </param>
     <param>
       <key>args</key>
-      <value>rtl=0</value>
+      <value></value>
     </param>
     <param>
       <key>_enabled</key>
@@ -1730,7 +1730,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(88, 196)</value>
+      <value>(72, 204)</value>
     </param>
     <param>
       <key>_rotation</key>
