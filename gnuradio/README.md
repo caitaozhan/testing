@@ -17,4 +17,5 @@ https://www.cnblogs.com/backahasten/p/5924907.html
 https://blog.csdn.net/jxwxg/article/details/53142911
 
 trap 1：install missing packages! osmocom and https://blog.csdn.net/sinat_38431275/article/details/77367773
+
 trap 2：antanna issue
