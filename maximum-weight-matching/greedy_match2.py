@@ -42,11 +42,11 @@ def greedy(n: int, edges: List):
     '''
     MAX_WEIGHT = 10000
     start = time.time()
-    buckets = [[] for _ in range(MAX_WEIGHT+1)]
+    buckets = [[] for _ in range(MAX_WEIGHT+1)]           # a list of list. In python a list is essentially a dynamic array, not "that list taught in class"
     for edge in edges:
-        buckets[edge[2]].append(edge)
+        buckets[edge[2]].append(edge)                     # putting the edge in the correct bucket according to the weight
     print('2.1 time for sorting = {:.6f}'.format(time.time() - start))
-    visited = [False]*(2*n)
+    visited = [False]*(2*n)                               # binary array
     match = {}
     i = 0
     weight_sum = 0
