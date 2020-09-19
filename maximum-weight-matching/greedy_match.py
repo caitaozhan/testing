@@ -42,12 +42,13 @@ def greedy(n: int, edges: List):
     '''
     start = time.time()
     edges = sorted(edges, key=lambda x:x[2], reverse=True)
+    print('2.1 time for sorting = {:.6f}'.format(time.time() - start))
     left_node = set()
     right_node = set()
     match = {}
     i = 0
     weight_sum = 0
-    while len(left_node) < n and len(right_node) < n and i < len(edges):
+    while i < len(edges):
         left, right, weight = edges[i]
         if (left not in left_node) and (right not in right_node):
             weight_sum += weight
@@ -55,7 +56,7 @@ def greedy(n: int, edges: List):
             right_node.add(right)
             match[left] = right
         i += 1
-    print('2. time for greedy = {:.6f}'.format(time.time() - start))
+    print('2.2 time for greedy = {:.6f}'.format(time.time() - start))
     return weight_sum, match
 
 

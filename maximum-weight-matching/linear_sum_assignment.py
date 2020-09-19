@@ -72,6 +72,6 @@ if __name__ == '__main__':
         print('{} percent optimal'.format(weight_sum/opt*100))
         print('*'*10, '\n')
 
-    # cost = create_data_array_toy()
-    # cost = -np.array(cost).astype(np.int)
-    # main(cost)
+    cost = create_data_array_toy()
+    cost = -np.array(cost).astype(np.int)
+    main(cost)
