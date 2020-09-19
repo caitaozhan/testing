@@ -23,7 +23,7 @@ int main()
     vector<int> right;
     for (int i = 0; i < N; i++)
     {
-        right.push_back(i+N);
+        right.push_back(i+N);   // nodes on the left hand side are from 0 to N-1, the nodes on the right hand side are from N to 2N-1
     }
     vector<Edge> edges;  // vector is essentially a dynamic array from the standard library. I always prefer using a vector in C++. There might be a better option. Edge is a class encapsulating an edge
     for (int i = 0; i < N; i++)
