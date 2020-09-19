@@ -69,5 +69,5 @@ if __name__ == '__main__':
     cost = create_data_array(1000)
     edges = cost2edges(cost)
     weight_sum, match = greedy(len(cost), edges)
-    print(weight_sum, len(match))
+    print('weight sum =', weight_sum, '; number of edges in the matches =', len(match))
 

@@ -37,7 +37,6 @@ int main()
             edges.push_back(edge);
         }
     }
-    cout<<"size:"<<edges.size()<<endl;
 
     auto start = system_clock::now();
     vector<vector<Edge>> buckets(MAX_WEIGHT + 1, vector<Edge>());
@@ -73,5 +72,5 @@ int main()
     end = system_clock::now();
     duration = duration_cast<microseconds>(end - start);
     cout<<"total time = "<<double(duration.count()) * microseconds::period::num / microseconds::period::den<<endl;
-    cout<<"weight = "<<weight_sum<<";  "<<match.size()<<endl;
+    cout<<"weight = "<<weight_sum<<";  number of edges in the match = "<<match.size()<<endl;
 }

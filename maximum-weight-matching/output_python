@@ -1,0 +1,4 @@
+1. time for building the edges = 0.0811605453491211
+2.1 time for sorting = 0.008711
+2.2 time for greedy = 0.022938
+weight sum = 9544340 ; number of edges in the matches = 991
