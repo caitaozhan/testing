@@ -6,6 +6,7 @@ import random
 import numpy as np
 from greedy_match import cost2edges, greedy
 from ortools.graph import pywrapgraph
+from scipy.optimize import linear_sum_assignment
 
 
 
@@ -39,6 +40,7 @@ def main(cost):
         for task in range(cols):
             if cost[worker][task]:
                 assignment.AddArcWithCost(worker, task, int(cost[worker][task]))
+
     print('2. time for initializing the linear assignment solver = {:.6f}'.format(time.time()-start))
 
     # 3: invoke the solver
@@ -46,6 +48,7 @@ def main(cost):
     start = time.time()
     solve_status = assignment.Solve()
     print('3. time for the algorithm = {:.6f}'.format(time.time() - start))
+    f.write(f'{len(cost)} {time.time() - start}\n')
     if solve_status == assignment.OPTIMAL:
         opt = assignment.OptimalCost()
         print('Total cost = ', opt, '\n')
@@ -58,8 +61,10 @@ def main(cost):
     return opt
 
 
+f = open('octopus.txt', 'a')
+
 if __name__ == '__main__':
-    for n in [100, 500, 1000, 5000]:
+    for n in [100, 250, 500, 750, 1000]:
         print('n = {}'.format(n))
         start = time.time()
         cost = create_data_array(n)
@@ -69,9 +74,17 @@ if __name__ == '__main__':
         edges = cost2edges(cost)
         weight_sum, _ = greedy(n, edges)
         print('weight sum', weight_sum)
-        print('{} percent optimal'.format(weight_sum/opt*100))
+        print('{:.2f}% optimal'.format(weight_sum/opt*100))
+
+        # start = time.time()
+        # matching = linear_sum_assignment(cost)
+        # print('\nscipy time', time.time() - start)
+        # weight_sum = -np.array(cost)[matching[0], matching[1]].sum()
+        # print('weight sum =', weight_sum)
+        # print('{:.2f}% optimal'.format(weight_sum/opt*100))
+
         print('*'*10, '\n')
 
-    cost = create_data_array_toy()
-    cost = -np.array(cost).astype(np.int)
-    main(cost)
+    # cost = create_data_array_toy()
+    # cost = -np.array(cost).astype(np.int)
+    # main(cost)
