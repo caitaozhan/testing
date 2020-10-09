@@ -5,3 +5,9 @@ __pycache__
 image-reverse/cluster-4.txt
 GPU-programming/1.csv
 */.vscode/launch.json
+*/testClips/
+*/trainClips/
+*/valClips/
+*/faces/
+*/file_receive
+.vscode
