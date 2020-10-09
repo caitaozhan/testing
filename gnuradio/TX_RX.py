@@ -3,10 +3,8 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: transmitter and receiver
-# Generated: Thu Feb 27 22:30:22 2020
+# GNU Radio version: 3.7.13.5
 ##################################################
-
-from distutils.version import StrictVersion
 
 if __name__ == '__main__':
     import ctypes
@@ -18,8 +16,7 @@ if __name__ == '__main__':
         except:
             print "Warning: failed to XInitThreads()"
 
-from PyQt5 import Qt
-from PyQt5 import Qt, QtCore
+from PyQt4 import Qt
 from gnuradio import blocks
 from gnuradio import digital
 from gnuradio import eng_notation
@@ -31,6 +28,7 @@ from gnuradio.filter import firdes
 from grc_gnuradio import blks2 as grc_blks2
 from optparse import OptionParser
 import osmosdr
+import pmt
 import sip
 import sys
 import time
@@ -61,11 +59,8 @@ class TX_RX(gr.top_block, Qt.QWidget):
         self.top_layout.addLayout(self.top_grid_layout)
 
         self.settings = Qt.QSettings("GNU Radio", "TX_RX")
+        self.restoreGeometry(self.settings.value("geometry").toByteArray())
 
-        if StrictVersion(Qt.qVersion()) < StrictVersion("5.0.0"):
-            self.restoreGeometry(self.settings.value("geometry").toByteArray())
-        else:
-            self.restoreGeometry(self.settings.value("geometry", type=QtCore.QByteArray))
 
         ##################################################
         # Variables
@@ -114,7 +109,7 @@ class TX_RX(gr.top_block, Qt.QWidget):
         )
         self.qtgui_sink_x_1_0.set_update_time(1.0/10)
         self._qtgui_sink_x_1_0_win = sip.wrapinstance(self.qtgui_sink_x_1_0.pyqwidget(), Qt.QWidget)
-        self.top_layout.addWidget(self._qtgui_sink_x_1_0_win)
+        self.top_grid_layout.addWidget(self._qtgui_sink_x_1_0_win)
 
         self.qtgui_sink_x_1_0.enable_rf_freq(True)
 
@@ -133,7 +128,7 @@ class TX_RX(gr.top_block, Qt.QWidget):
         )
         self.qtgui_sink_x_1.set_update_time(1.0/10)
         self._qtgui_sink_x_1_win = sip.wrapinstance(self.qtgui_sink_x_1.pyqwidget(), Qt.QWidget)
-        self.top_layout.addWidget(self._qtgui_sink_x_1_win)
+        self.top_grid_layout.addWidget(self._qtgui_sink_x_1_win)
 
         self.qtgui_sink_x_1.enable_rf_freq(True)
 
@@ -161,6 +156,7 @@ class TX_RX(gr.top_block, Qt.QWidget):
           log=False,
           )
         self.blocks_file_source_0 = blocks.file_source(gr.sizeof_char*1, '/home/caitao/Project/testing/gnuradio/file_transmit', True)
+        self.blocks_file_source_0.set_begin_tag(pmt.PMT_NIL)
         self.blocks_file_sink_0 = blocks.file_sink(gr.sizeof_char*1, '/home/caitao/Project/testing/gnuradio/file_receive', False)
         self.blocks_file_sink_0.set_unbuffered(True)
         self.blks2_packet_encoder_0 = grc_blks2.packet_mod_b(grc_blks2.packet_encoder(
@@ -178,6 +174,8 @@ class TX_RX(gr.top_block, Qt.QWidget):
         		callback=lambda ok, payload: self.blks2_packet_decoder_0.recv_pkt(ok, payload),
         	),
         )
+
+
 
         ##################################################
         # Connections
@@ -226,7 +224,8 @@ class TX_RX(gr.top_block, Qt.QWidget):
 
 def main(top_block_cls=TX_RX, options=None):
 
-    if StrictVersion("4.5.0") <= StrictVersion(Qt.qVersion()) < StrictVersion("5.0.0"):
+    from distutils.version import StrictVersion
+    if StrictVersion(Qt.qVersion()) >= StrictVersion("4.5.0"):
         style = gr.prefs().get_string('qtgui', 'style', 'raster')
         Qt.QApplication.setGraphicsSystem(style)
     qapp = Qt.QApplication(sys.argv)
@@ -238,7 +237,7 @@ def main(top_block_cls=TX_RX, options=None):
     def quitting():
         tb.stop()
         tb.wait()
-    qapp.aboutToQuit.connect(quitting)
+    qapp.connect(qapp, Qt.SIGNAL("aboutToQuit()"), quitting)
     qapp.exec_()
 
 
