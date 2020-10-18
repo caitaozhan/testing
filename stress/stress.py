@@ -14,7 +14,7 @@ if __name__ == '__main__':
 
 '''
 
-i7-8700 (6 task, 12 hyperthread)
+i7-8700 (6 core, 12 hyperthread)
 task | time(s) | freq(GHz) | power(W)
 1    | 42      | 4.3       | 34
 2    | 43      | 4.3       | 46
@@ -24,7 +24,7 @@ task | time(s) | freq(GHz) | power(W)
 12   | 107     | 3.5       | 65
 
 
-i5-1035G1 (4 task, 8 hyperthread)
+i5-1035G1 (4 core, 8 hyperthread)
 task | time(s) | freq(GHz) | power(W)
 1    | 50      | 3.3       | 11
 2    | 55      | 2.9       | 14
