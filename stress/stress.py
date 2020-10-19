@@ -17,9 +17,9 @@ if __name__ == '__main__':
 Lenovo
 i5-3230M (2 core, 4 hyperthread)
 task | time(s) | freq(GHz) | power(W)
-1    | 109     | 3.2       | 11
-2    | 110     | 3.0       | 14 
-4    | 195     | 3.0       | 15
+1    | 101     | 3.2       | 11
+2    | 107     | 3.0       | 14 
+4    | 192     | 3.0       | 15
 
 Acer
 i5-4200U (2 core, 4 hyperthread)
