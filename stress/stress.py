@@ -53,4 +53,10 @@ task | time(s) | freq(GHz) | power(W)
 4    | 195     | 3.0       | 15
 
 
+Acer
+i5-4200U (2 core, 4 hyperthread)
+task | time(s) | freq(GHz) | power(W)
+1    | 77      | 2.3       | 11
+2    | 86      | 2.3       | 15
+4    | 167     | 2.3       | 16
 '''
