@@ -6,7 +6,7 @@ from subprocess import Popen, PIPE
 
 
 if __name__ == '__main__':
-    task = 8
+    task = 4
     ps = []
     for i in range(task):
         command = ['python', 'run.py']
@@ -43,4 +43,14 @@ task | time(s) | freq(GHz) | power(W)
 4    | 55      | 3.1       | 42
 6    | 85      | 3.1       | 43
 8    | 108     | 3.1       | 44
+
+
+Lenovo
+i5-3230M (2 core, 4 hyperthread)
+task | time(s) | freq(GHz) | power(W)
+1    | 109     | 3.2       | 11
+2    | 110     | 3.0       | 14 
+4    | 195     | 3.0       | 15
+
+
 '''
