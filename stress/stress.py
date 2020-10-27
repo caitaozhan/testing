@@ -2,7 +2,7 @@
 stress the CPU
 '''
 
-from subprocess import Popen, PIPE
+from subprocess import Popen
 
 
 if __name__ == '__main__':
@@ -14,12 +14,12 @@ if __name__ == '__main__':
 
 '''
 
-Lenovo
-i5-3230M (2 core, 4 hyperthread)
-task | time(s) | freq(GHz) | power(W)
-1    | 101     | 3.2       | 11
-2    | 107     | 3.0       | 14 
-4    | 192     | 3.0       | 15
+Lenovo                                       ThinkPad E431
+i5-3230M (2 core, 4 hyperthread)             i5-3320M (2 core, 4 hyperthread)
+task | time(s) | freq(GHz) | power(W)        task | time(s) | freq(GHz) | power(W)  
+1    | 101     | 3.2       | 11              1    | 100     | 3.2       | 13
+2    | 107     | 3.0       | 14              2    | 117     | 1.2-3.1   | 17
+4    | 192     | 3.0       | 15              4    | 270     | 1.2-3.1   | 18   Note: can not keep the freq due to high temp
 
 Acer
 i5-4200U (2 core, 4 hyperthread)
