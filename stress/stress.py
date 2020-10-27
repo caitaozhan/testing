@@ -28,7 +28,7 @@ task | time(s) | freq(GHz) | power(W)
 2    | 86      | 2.3       | 15
 4    | 167     | 2.3       | 16
 
-Thinkpad P50 (2017)
+Thinkpad P50 (2016)
 i7-6700HQ (4 core, 8 hyperthread)
 task | time(s) | freq(GHz) | power(W)
 1    | 49      | 3.5       | 18
