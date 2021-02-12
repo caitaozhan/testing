@@ -8,5 +8,5 @@
       "--disable=E1102", "--disable=E1120",
       "--disable=E0602"
     ],
-    "python.pythonPath": "/Users/caitao/opt/anaconda3/bin/python"
+    "python.pythonPath": "/home/caitao/anaconda3/bin/python"
 }
