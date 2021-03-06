@@ -13,7 +13,7 @@ class Heap():
     def newMinHeapNode(self, v, dist):
         minHeapNode = [v, dist]
         return minHeapNode
- 
+
     # A utility function to swap two nodes of min heap. Needed for min heapify
     def swapMinHeapNode(self,a, b):
         self.array[a], self.array[b] = self.array[b], self.array[a]
@@ -41,7 +41,7 @@ class Heap():
             # Swap nodes
             self.swapMinHeapNode(smallest, idx)
  
-            self.minHeapify(smallest)
+            self.minHeapify(smallest)  # recursive
  
     # Standard function to extract minimum node from heap
     def extractMin(self):
@@ -133,7 +133,7 @@ class Graph():
         # Initialize min heap with all vertices. dist value of all vertices
         for v in range(V):
             dist.append(float('inf'))
-            minHeap.array.append(minHeap.newMinHeapNode(v, dist[v]))
+            minHeap.array.append(minHeap.newMinHeapNode(v, dist[v]))  # v is the ID of node, equals to the initial index
             minHeap.pos.append(v)
 
         # Make dist value of src vertex as 0 so that it is extracted first
@@ -145,10 +145,10 @@ class Graph():
         minHeap.size = V
 
         # In the following loop, min heap contains all nodes whose shortest distance is not yet finalized.
-        while minHeap.isEmpty() == False:
+        while minHeap.isEmpty() == False:             # O(V*logV + E*logV)
 
             # Extract the vertex with minimum distance value
-            newHeapNode = minHeap.extractMin()
+            newHeapNode = minHeap.extractMin()        # O(V*logV)
             u = newHeapNode[0]
 
             # Traverse through all adjacent vertices of u (the extracted vertex) and update their distance values
@@ -161,9 +161,9 @@ class Graph():
                     dist[v] = pCrawl[1] + dist[u]
 
                     # update distance value in min heap also
-                    minHeap.decreaseKey(v, dist[v])
+                    minHeap.decreaseKey(v, dist[v])   # O(E*logV)
 
-        printArr(dist,V)
+        printArr(dist, V)
 
 
 
