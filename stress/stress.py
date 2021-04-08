@@ -63,4 +63,14 @@ task | time(s) | freq(GHz) | power(W)
 6    | 107     | 1.9       | 15
 8    | 141     | 1.9       | 15
 
+MacBook Pro 13' (2020)
+M1 (4 high-performace cores + 4 energy-efficient cores)
+Task | time(s) | freq(GHz) | power(W)
+1    | 24      |
+2    | 25      |
+4    | 27      |
+6    | 34      |
+8    | 41      |
+12   | 60      |
+
 '''
