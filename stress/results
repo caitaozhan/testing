@@ -61,9 +61,9 @@ Task | time(s) | freq(GHz) | power(W)
 Microsoft Surface Laptop 3 (2020)
 i7-1065G7 (4 core, 8 hyperthread)
 Task | time(s) | freq(GHz) | power(W)
-1    | 44      |
-2    | 44      |
-4    | 54      |
-6    | 83      |
-8    | 124     |
+1    | 44      | 3.6
+2    | 44      | 3.6
+4    | 54      | 2.9
+6    | 83      | 2.7
+8    | 121     | 2.3
 
