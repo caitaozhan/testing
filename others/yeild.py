@@ -1,6 +1,13 @@
 ''' at first glance, yield is similar to return, 
-    but a return completely ceases a function, whereas yield interrupts a peice of code and will come back later
+    but a return completely ceases a function, whereas yield interrupts a peice of code and will come back later (coroutine)
     yield makes a function not a function anymore, it becomes a generator.
+
+https://en.cppreference.com/w/cpp/language/coroutines
+Coroutine: a coroutine is a function that can suspend execution to be resumed later. Coroutines are stackless: they suspend
+execution by returning to the caller and the data that is required to resume execution is stored separately from the stack.
+This allows for sequential code that executes asynchronously (e.g. handle non-blocking I/O without explicit callbacks), and
+also supports algorithms on lazy-computed infinite sequences and other uses.
+
 '''
 from types import FunctionType, GeneratorType
 
