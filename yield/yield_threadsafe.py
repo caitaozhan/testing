@@ -56,7 +56,7 @@ class Counter:
     def __iter__(self):
         return self
     
-    def next(self):
+    def __next__(self):
         # acquire/release the lock when updating self.i
         with self.lock:
             self.i += 1
@@ -99,10 +99,10 @@ def main():
 
 
 def main2():
-    c1 = count()
-    c1 = threadsafe_generator(c1)
-    run(c1.next, repeats=100000, nthreads=4)
-    print('c1', c1.next())
+    # c1 = count()
+    # c1 = threadsafe_generator(c1)
+    # run(c1.next, repeats=100000, nthreads=4)
+    # print('c1', c1.next())
 
     c2 = count2()
     run(c2.next, repeats=100000, nthreads=4)
