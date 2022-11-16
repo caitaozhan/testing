@@ -12,7 +12,7 @@ class Solution:
         """
         Do not return anything, modify board in-place instead.
         """
-        f = open("demofile2.txt", "a")
+        f = open("log.txt", "a")
         seed = 8
         np.random.seed(seed)
         random.seed(seed)
