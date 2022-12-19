@@ -8,7 +8,7 @@ class Heap():
     def __init__(self):
         self.array = []
         self.size = 0
-        self.pos = []
+        self.pos = []    # Position is needed for decreaseKey()
  
     def newMinHeapNode(self, v, dist):
         minHeapNode = [v, dist]
@@ -18,8 +18,7 @@ class Heap():
     def swapMinHeapNode(self,a, b):
         self.array[a], self.array[b] = self.array[b], self.array[a]
  
-    # A standard function to heapify at given idx. This function also updates position of nodes when they are swapped. 
-    # Position is needed for decreaseKey()
+    # Move down a node at idx: A standard function to heapify at given idx. This function also updates position of nodes when they are swapped. 
     def minHeapify(self, idx):
         smallest = idx
         left = 2*idx + 1

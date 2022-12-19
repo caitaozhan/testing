@@ -12,3 +12,4 @@ GPU-programming/1.csv
 */file_receive
 .vscode
 .virtual_documents
+quantum/torchquantum/mnist_data/*
