@@ -56,6 +56,7 @@ def noise_model(ep_s, ep_t):
 
 
 num_qubits, n_shots = 3, 1000
+# monolithic
 q = QuantumRegister(num_qubits + 2)
 c = ClassicalRegister(num_qubits)
 circ, unitary = create_initial_circuit(q, c)
@@ -63,9 +64,12 @@ circuit = QPE(unitary, circ, num_qubits)
 qft_dagger(circuit, num_qubits)
 for i in range(num_qubits):
     circuit.measure(i, i)
+
+# distributed
 circ, unitary = create_initial_circuit(q, c)
 circ = QPE(unitary, circ, num_qubits)
-gate_app, qc = DQCS.DistributedCircuits(transpile(circ, basis_gates=['u', 'h', 'cx'], optimization_level=3), {"1": [i for i in range(num_qubits)], "2": [num_qubits, num_qubits+1]}).create_circuit()
+transpiled_circ = transpile(circ, basis_gates=['u', 'h', 'cx'], optimization_level=3)
+gate_app, qc = DQCS.DistributedCircuits(transpiled_circ, {"1": [i for i in range(num_qubits)], "2": [num_qubits, num_qubits+1]}).create_circuit()
 q, c = QuantumRegister(circ.num_qubits + 4, 'q'), ClassicalRegister(4, 'c')
 circuit_0 = QuantumCircuit(q, c)
 circuit_0.append(qc.to_instruction(), q[0:circ.num_qubits + 4], c[0:4])
@@ -73,13 +77,21 @@ dynamic_qft(circuit_0, num_qubits, c, True)
 val = '100'
 count, counts, x = [], [], []
 for i in range(0, 10):
-    count.append(execute(circuit, Aer.get_backend('qasm_simulator'), basis_gates=noise_model(i * 0.005, i * 0.005).basis_gates,
-                         noise_model=noise_model(i * 0.005, i * 0.005), shots=n_shots).result().get_counts()[val]/n_shots)
-    counts.append(execute(circuit_0, Aer.get_backend('qasm_simulator'), basis_gates=noise_model(i * 0.005, i * 0.005).basis_gates,
-                          noise_model=noise_model(i * 0.005, i * 0.005), shots=n_shots).result().get_counts()['0' + val]/n_shots)
+    try:
+        count.append(execute(circuit, Aer.get_backend('qasm_simulator'), basis_gates=noise_model(i * 0.005, i * 0.005).basis_gates, noise_model=noise_model(i * 0.005, i * 0.005), shots=n_shots).result().get_counts()[val]/n_shots)
+        counts.append(execute(circuit_0, Aer.get_backend('qasm_simulator'), basis_gates=noise_model(i * 0.005, i * 0.005).basis_gates, noise_model=noise_model(i * 0.005, i * 0.005), shots=n_shots).result().get_counts()['0' + val]/n_shots)
+    except Exception as e:
+        print(i, e)
+    # count.append(execute(circuit, Aer.get_backend('qasm_simulator'), basis_gates=noise_model(i * 0.005, i * 0.005).basis_gates, noise_model=noise_model(i * 0.005, i * 0.005), shots=n_shots).result().get_counts())
+    # counts.append(execute(circuit_0, Aer.get_backend('qasm_simulator'), basis_gates=noise_model(i * 0.005, i * 0.005).basis_gates, noise_model=noise_model(i * 0.005, i * 0.005), shots=n_shots).result().get_counts())
     x.append(i * 0.05)
-plt.plot(x, counts, "b*-")
-plt.plot(x, count, "r*-")
+
+# print(count)
+# print('---')
+# print(counts)
+
+plt.plot(x[:len(counts)], counts, "b*-")
+plt.plot(x[:len(count)], count, "r*-")
 plt.xlabel(r"$\epsilon$")
 plt.ylabel("Probability")
 plt.legend(["DDQPE", "QPE"])
