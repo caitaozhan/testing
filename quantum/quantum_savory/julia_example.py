@@ -4,6 +4,8 @@ from sequence.kernel.timeline import Timeline
 from sequence.components.memory import Memory
 from sequence.topology.router_net_topo import RouterNetTopo
 
+jl.seval("using QuantumSavory")
+jl.seval("using QuantumSavory.StatesZoo")
 
 def stateszoo():
     jl.seval("using QuantumSavory")
@@ -42,8 +44,8 @@ def get_density_matrix_from_qsavory(etaA, etaB, Pd, etaD, V, m) -> np.ndarray:
     Returns:
         np.ndarray: the density matrix as a NumPy array
     """
-    jl.seval("using QuantumSavory")
-    jl.seval("using QuantumSavory.StatesZoo")
+    # jl.seval("using QuantumSavory")
+    # jl.seval("using QuantumSavory.StatesZoo")
 
     bk = jl.BarrettKokBellPair(etaA, etaB, Pd, etaD, V, m)
     rho_qo = jl.QuantumSavory.express(bk, jl.QuantumSavory.QuantumOpticsRepr())
@@ -83,9 +85,9 @@ def stateszoo2sequence():
     # step 2: get the density matrix from QuantumSavory
     etaA = 0.5
     etaB = 0.5
-    Pd   = 0.01
+    Pd   = 0
     etaD = 0.85
-    V    = 0.95
+    V    = 0.9
     m    = 0
     rho = get_density_matrix_from_qsavory(etaA, etaB, Pd, etaD, V, m)
     print(f"Density matrix from StatesZoo: {rho}")
