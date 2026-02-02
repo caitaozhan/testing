@@ -1,6 +1,7 @@
 from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Dict, List, Tuple, Optional, Iterable, Set
+from collections import defaultdict
 import heapq
 import math
 
@@ -380,14 +381,12 @@ class OSPFRouter:
           nexthop[dst] = first router to send to (simple single-path; pick lowest RID on ties)
         """
         # Build adjacency from installed LSAs
-        adj: Dict[str, List[Tuple[str, float]]] = {}
+        adj: Dict[str, List[Tuple[str, float]]] = defaultdict(list)
         for lsa in self.lsdb:
             if lsa.header.age >= MAX_AGE:
                 continue
             u = lsa.header.advertising_router
-            adj.setdefault(u, [])
             for link in lsa.links:
-                adj.setdefault(link.neighbor, [])
                 adj[u].append((link.neighbor, link.cost))
 
         INF = 1e18
@@ -395,13 +394,13 @@ class OSPFRouter:
         prev: Dict[str, Set[str]] = {n: set() for n in adj}
         dist[self.rid] = 0.0
         pq: List[Tuple[float, str]] = [(0.0, self.rid)]
-        seen: Set[str] = set()
+        visited: Set[str] = set()
 
         while pq:
             d, u = heapq.heappop(pq)
-            if u in seen:
+            if u in visited:
                 continue
-            seen.add(u)
+            visited.add(u)
             for v, w in adj.get(u, []):
                 alt = d + w
                 if alt < dist[v] - 1e-12:
